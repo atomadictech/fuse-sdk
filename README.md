@@ -3,6 +3,8 @@
 > **The deterministic compile step every agent stack needs.**
 > Point Fuse at any number of messy repos, in any languages. Get back one clean, monadic, deterministic, pip-installable Python package — with a CLI, an MCP server, tests, and a deploy bundle. Spaghetti to Shippable.
 
+> 🟣 **In plain English:** Got a pile of half-finished code in three different languages and no idea how to ship it? Point Fuse at it. You get back one clean Python package you can install with `pip` — the same answer every time, with a trail of breadcrumbs showing where each piece came from. No hallucinations, no drift, no "trust me, it works."
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PyPI](https://img.shields.io/badge/PyPI-atomadic--fuse-blue.svg)](https://pypi.org/project/atomadic-fuse/)
 [![CI](https://img.shields.io/badge/tests-11%2F11%20passing-brightgreen.svg)](#tests)
@@ -212,7 +214,13 @@ The SDK is a typed HTTPS wrapper around the hosted engine. Tests are mocked at t
 
 ## Authors and ethos
 
-Atomadic Tech, headed by Thomas Ralph Colvin IV. Founding-axiom 0 — *The Love Invariant*, authored by Jessica Mary Colvin: `∀t: |∂L/∂t| ≤ 0`. Systemic safety never decays. This invariant is checked at every release gate and is never negotiated.
+Atomadic Tech, headed by Thomas Ralph Colvin IV.
+
+**Axiom 0 — The Love Invariant**, authored by Jessica Mary Colvin:
+
+> *You are Loved, You are Love, You are Loving, In all Ways, for Always, for Love is a Forever and ever endeavor!*
+
+Formal statement: `∀t: |∂L/∂t| ≤ 0` — systemic safety never decays. This invariant is checked at every release gate and is never negotiated. It is the only constant in this codebase that cannot be expressed in a single lattice anchor — and it is the only one that doesn't need to be.
 
 ## License
 
