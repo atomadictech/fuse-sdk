@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "atomadic-fuse"
+version = "0.1.0"
+description = "Atomadic Fuse — Spaghetti to Shippable. Per-repo monadic compiler with polyglot AST scan."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Atomadic Tech" },
+]
+keywords = [
+    "compiler", "ast", "monadic", "polyglot", "mcp",
+    "agent", "logic-block", "fuse", "atomadic",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Compilers",
+]
+dependencies = [
+    "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+mcp = ["mcp[cli]>=1.0.0"]
+gui = ["gradio>=4.0.0"]
+
+[project.scripts]
+fuse = "atomadic_fuse.cli:main"
+fuse-mcp = "atomadic_fuse.mcp_server:launch"
+
+[project.urls]
+Homepage    = "https://atomadic.tech"
+Source      = "https://github.com/atomadictech/atomadic-fuse"
+Issues      = "https://github.com/atomadictech/atomadic-fuse/issues"
+Pricing     = "https://atomadic.tech/pricing"
+SourceOfTruth = "https://sot.atomadic.tech/SoT.json"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
