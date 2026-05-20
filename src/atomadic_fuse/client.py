@@ -97,11 +97,46 @@ class FuseClient:
     def doctor(self) -> dict[str, Any]:
         """Health probe across the hosted engine workspace."""
         return self._post("doctor", {})
+    # ── Superhero tools (v0.3.2) — direct HTTP to hosted Fuse engine ─────
+
+    def verify_block(self, block_id: str) -> dict[str, Any]:
+        """Anti-hallucination: returns block + SHA-256 verification receipt."""
+        return self._post("verify_block", {"block_id": block_id})
+
+    def search_intent(self, description: str, tier: str | None = None,
+                      limit: int = 10) -> dict[str, Any]:
+        """Semantic search: describe what you need, get verified blocks ranked."""
+        payload: dict[str, Any] = {"description": description, "limit": int(limit)}
+        if tier:
+            payload["tier"] = tier
+        return self._post("search_intent", payload)
+
+    def compose_stack(self, intent: str, target_language: str | None = None) -> dict[str, Any]:
+        """Walk full tier dependency chain (T6→T0) for an intent."""
+        payload: dict[str, Any] = {"intent": intent}
+        if target_language:
+            payload["target_language"] = target_language
+        return self._post("compose_stack", payload)
+
+    def emit_corpus(self, target_language: str, target_dir: str | None = None) -> dict[str, Any]:
+        """Emit the complete verified corpus as a shippable package."""
+        payload: dict[str, Any] = {"target_language": target_language}
+        if target_dir:
+            payload["target_dir"] = target_dir
+        return self._post("emit_corpus", payload)
+
+    def explain_block(self, block_id: str, detail: bool = False) -> dict[str, Any]:
+        """Context-aware explanation of a block's contract and dependencies."""
+        return self._post("explain_block", {"block_id": block_id, "detail": detail})
+
+    def usage_stats(self) -> dict[str, Any]:
+        """Token-savings dashboard: corpus size, block counts, savings estimate."""
+        return self._post("usage_stats", {})
 
     # ── HTTP plumbing ────────────────────────────────────────────────
 
     def _headers(self, extra: dict[str, str] | None = None) -> dict[str, str]:
-        h = {"Content-Type": "application/json", "User-Agent": "atomadic-fuse/0.3.1"}
+        h = {"Content-Type": "application/json", "User-Agent": "atomadic-fuse/0.3.2"}
         if self.api_key:
             h["Authorization"] = f"Bearer {self.api_key}"
         if extra:
