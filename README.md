@@ -10,6 +10,9 @@
 [![CI](https://img.shields.io/badge/tests-11%2F11%20passing-brightgreen.svg)](#tests)
 [![Codex-anchored](https://img.shields.io/badge/Codex-anchored-violet.svg)](#why-it-works)
 [![Status](https://img.shields.io/badge/status-public%20beta-orange.svg)](https://atomadic.tech)
+> **v0.3.1 architecture (2026-05-19):** The 6 superhero tools (`verify_block`, `search_intent`, `compose_stack`, `emit_corpus`, `explain_block`, `usage_stats`) route to the **TOCC kernel** — the Haskell engine where verified-corpus operations actually live. Running `fuse-mcp` spawns a stdio MCP proxy to `tocc-mcp.exe` on your machine via JSON-RPC. If the TOCC kernel isn't installed, those 6 tools return a structured `error + install hint` payload; the 8 classic verbs (`compile`, `classify`, `absorb`, `catalog`, `capabilities`, `intent`, `doctor`) continue to work against the hosted engine at `fuse.atomadic.tech` regardless.
+
+> **Atomadic Transmute** is the **internal-only** tier-higher edition — same Fuse surface PLUS ecosystem orchestration (`synthesize_ecosystem`, store surgery, meta-engine emit). The world gets Fuse; we keep Transmute private. Both share the TOCC kernel as the single source of truth.
 
 ```bash
 pip install atomadic-fuse
