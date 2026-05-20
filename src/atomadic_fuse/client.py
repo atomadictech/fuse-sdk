@@ -136,7 +136,7 @@ class FuseClient:
     # ── HTTP plumbing ────────────────────────────────────────────────
 
     def _headers(self, extra: dict[str, str] | None = None) -> dict[str, str]:
-        h = {"Content-Type": "application/json", "User-Agent": "atomadic-fuse/0.3.2"}
+        h = {"Content-Type": "application/json", "User-Agent": "atomadic-fuse/0.3.3"}
         if self.api_key:
             h["Authorization"] = f"Bearer {self.api_key}"
         if extra:
