@@ -8,8 +8,17 @@ See README.md for quick start. See SoT.json for live ecosystem stats:
 """
 from __future__ import annotations
 
-from .client import FuseClient
+from .client import FuseClient, _seed_root as _seed_root
 from .exceptions import FuseError, DecisionNeeded, PaymentRequired
 
-__all__ = ["FuseClient", "FuseError", "DecisionNeeded", "PaymentRequired"]
-__version__ = "0.3.3"
+
+def seed_path():
+    """Return the bundled seed logic-base directory path."""
+    return _seed_root()
+
+
+__all__ = [
+    "FuseClient", "FuseError", "DecisionNeeded", "PaymentRequired",
+    "seed_path",
+]
+__version__ = "1.0.0"

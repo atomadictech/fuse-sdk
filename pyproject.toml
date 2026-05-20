@@ -4,29 +4,29 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "atomadic-fuse"
-version = "0.3.3"
-description = "Atomadic Fuse — Spaghetti to Shippable. Per-repo monadic compiler with polyglot AST scan."
+version = "1.0.0"
+description = "Atomadic Fuse — Spaghetti to Shippable. Per-repo monadic compiler with the emergent finder and full polyglot emitter set (T0-T5)."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [
-    { name = "Atomadic Tech" },
+ { name = "Atomadic Tech" },
 ]
 keywords = [
-    "compiler", "ast", "monadic", "polyglot", "mcp",
-    "agent", "logic-block", "fuse", "atomadic",
+ "compiler", "ast", "monadic", "polyglot", "mcp",
+ "agent", "logic-block", "fuse", "atomadic",
 ]
 classifiers = [
-    "Development Status :: 4 - Beta",
-    "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Topic :: Software Development :: Compilers",
+ "Development Status :: 4 - Beta",
+ "Intended Audience :: Developers",
+ "License :: OSI Approved :: MIT License",
+ "Programming Language :: Python :: 3.10",
+ "Programming Language :: Python :: 3.11",
+ "Programming Language :: Python :: 3.12",
+ "Topic :: Software Development :: Compilers",
 ]
 dependencies = [
-    "httpx>=0.27",
+ "httpx>=0.27",
 ]
 
 [project.optional-dependencies]
@@ -38,14 +38,27 @@ fuse = "atomadic_fuse.cli:main"
 fuse-mcp = "atomadic_fuse.mcp_server:launch"
 
 [project.urls]
-Homepage    = "https://atomadic.tech"
-Source      = "https://github.com/atomadictech/fuse-sdk"
-Issues      = "https://github.com/atomadictech/fuse-sdk/issues"
-Pricing     = "https://atomadic.tech/pricing"
+Homepage = "https://atomadic.tech"
+Source = "https://github.com/atomadictech/fuse-sdk"
+Issues = "https://github.com/atomadictech/fuse-sdk/issues"
+Pricing = "https://atomadic.tech/pricing"
 SourceOfTruth = "https://sot.atomadic.tech/SoT.json"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
+include-package-data = true
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+# Ship the seed logic-base (manifest, glossary, tier_0/1/2 shards) with the wheel
+atomadic_fuse = [
+ "logic-base-seed/manifest.json",
+ "logic-base-seed/README.md",
+ "logic-base-seed/glossary/*.json",
+ "logic-base-seed/glossary/*.md",
+ "logic-base-seed/tiers/tier_0/shards/*.jsonl",
+ "logic-base-seed/tiers/tier_1/shards/*.jsonl",
+ "logic-base-seed/tiers/tier_2/shards/*.jsonl",
+]

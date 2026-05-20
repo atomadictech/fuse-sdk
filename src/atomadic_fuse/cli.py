@@ -10,14 +10,26 @@ from .exceptions import DecisionNeeded, FuseError, PaymentRequired
 
 
 def _client_from_args(args: argparse.Namespace) -> FuseClient:
-    return FuseClient(api_key=args.api_key, endpoint=args.endpoint)
+    return FuseClient(
+        api_key=args.api_key,
+        endpoint=args.endpoint,
+        telemetry_opt_in=bool(getattr(args, "telemetry", False)),
+    )
 
 
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="fuse", description="Atomadic Fuse — Spaghetti to Shippable.")
     p.add_argument("--api-key",  default=None)
     p.add_argument("--endpoint", default=None)
+    p.add_argument("--telemetry", action="store_true",
+                   help="Opt-in to anonymized metadata telemetry (CNAE/tier/domain/language — never code or intent text)")
     sub = p.add_subparsers(dest="verb", required=True)
+
+    sp = sub.add_parser("init", help="copy the bundled seed logic-base to ./logic-base/")
+    sp.add_argument("--target", default="./logic-base",
+                    help="Where to seed the logic-base (default: ./logic-base/)")
+
+    sp = sub.add_parser("seed-info", help="show the bundled seed logic-base path + counts")
 
     sp = sub.add_parser("compile", help="messy repo → clean shippable package")
     sp.add_argument("repo_root")
@@ -48,11 +60,34 @@ def main(argv: list[str] | None = None) -> int:
     args = p.parse_args(argv)
 
     if args.verb == "list":
-        print("Atomadic Fuse — verbs: compile, classify, absorb, catalog, "
+        print("Atomadic Fuse — verbs: init, seed-info, compile, classify, absorb, catalog, "
               "capabilities, intent, doctor")
         print("Docs: https://github.com/atomadictech/atomadic-fuse")
         print("Live stats: https://sot.atomadic.tech/SoT.json")
         return 0
+
+    if args.verb == "seed-info":
+        from . import seed_path
+        sp = seed_path()
+        if not sp.is_dir():
+            print(f"seed not bundled at {sp} -- reinstall atomadic-fuse", file=sys.stderr)
+            return 1
+        blocks = 0; shards = 0
+        for shard in sp.rglob("*.jsonl"):
+            shards += 1
+            blocks += sum(1 for ln in open(shard, encoding="utf-8") if ln.strip())
+        print(json.dumps({"seed_path": str(sp), "blocks": blocks, "shards": shards}, indent=2))
+        return 0
+
+    if args.verb == "init":
+        client = _client_from_args(args)
+        try:
+            out = client.init(target_dir=args.target)
+            print(json.dumps(out, indent=2))
+            return 0
+        except FuseError as e:
+            print(f"FuseError: {e}", file=sys.stderr)
+            return 1
 
     client = _client_from_args(args)
     try:

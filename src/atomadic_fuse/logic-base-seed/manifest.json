@@ -1,0 +1,17 @@
+{
+  "schema_version": "tocc.logic_base_manifest.v1",
+  "scope": "public_seed",
+  "tagline": "Atomadic Fuse SDK seed logic-base. T0 schemas + T1 examples + T2 composites. ~50-70 blocks. Bootstrap `fuse init`, then harvest your own code.",
+  "canonical": [
+    "manifest.json",
+    "glossary/*.json",
+    "tiers/tier_*/shards/*.jsonl"
+  ],
+  "generated": [
+    "tiers/tier_*/index.json",
+    "indexes/*.json"
+  ],
+  "phase": "sdk_seed",
+  "tier_cap": 2,
+  "note": "After `fuse init`, run `fuse harvest <repo>` to grow your own private store. The full ecosystem store lives on fuse.atomadic.tech (hosted) or via the kernel binary (private)."
+}
