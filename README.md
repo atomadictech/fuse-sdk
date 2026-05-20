@@ -19,13 +19,25 @@ pip install atomadic-fuse
 
 ---
 
+## What's new in **1.1.0** (2026-05-20)
+
+- **9 new MCP tools** — `quickstart`, `friction`, `promote_hypotheses`, `promote_candidate`, `explain_lineage`, `lint_store`, `validate_store`, `deduplicate_store`, `rebuild_indexes` — **30 total tools** (was 21). Full Gen14 engine parity.
+- **Friction Protocol** — `friction()` reads the UX telemetry log. Every Fuse operation emits structured friction events (`zero_atoms`, `workspace_missing`, `bad_path`, etc.) you can query to understand what's going wrong and where.
+- **Promotion pipeline** — `promote_hypotheses()` and `promote_candidate()` run the full 11-gate TOCC promotion pipeline. Candidates become verified canonical blocks you can trust absolutely.
+- **Store governance** — `lint_store`, `validate_store`, `deduplicate_store`, `rebuild_indexes` give your logic-base a clean bill of health in one call each.
+- **Lineage explorer** — `explain_lineage(block_id)` returns the full composed_from + depends_on tree for any block. See exactly what a block depends on, all the way to T0.
+- **One-shot quickstart** — `quickstart(directory)` does scan → absorb → synthesize → emit in a single call. Permissive mode (default) works on any codebase with no CNAE setup.
+- **162 language extension mappings** (was 123) — C++, PHP, and Rust pattern coverage improved in the Gen14 polyglot harvesters.
+- **Engine v1.1.0 sovereign package** — `emit-self-host` now produces a complete, installable package with all 6 entry points (`fuse`, `fuse-engine`, `fuse-mcp`, `fuse-engine-mcp`, `fuse-gui`, `fuse-engine-gui`), hatchling build backend, optional `mcp[cli]` + `gradio` deps, and bundled README + tests.
+- **IP boundary hardened** — `PUBLIC_THEMES` filter prevents private theme IDs (codex, aletheia, transmute, nexus) from leaking into public emits. `.lean` files opt-in only. No personal email in any emitted `pyproject.toml`.
+
 ## What's new in **1.0.0** (2026-05-19)
 
 - **8 new client methods** — `scan`, `discover`, `synthesize`, `emit`, `validate`, `status`, `search`, `logic_map` — mirror the local Fuse engine MCP one-for-one. The 13 legacy verbs still work; 21 total now.
 - **Bundled seed logic-base** — `pip install atomadic-fuse` now ships **49 verified blocks** (T0 schemas + T1 examples + T2 composites). Run `fuse init` to copy them to your CWD; `fuse harvest <repo>` populates from your own code.
 - **Opt-in telemetry hook** — `FuseClient(telemetry_opt_in=True)` or `ATOMADIC_FUSE_TELEMETRY=1` sends anonymized CNAE/tier/domain metadata only. Never source, never intent text. Off by default.
 - **`fuse init` and `fuse seed-info` CLI verbs** — bootstrap a local store in two commands.
-- **Polyglot emit** — engine now covers **123 target languages** (was 6). Same `compile`/`emit_corpus` calls, more output choices.
+- **Polyglot emit** — engine now covers **162 target language extensions** across 124 language families. Same `compile`/`emit_corpus` calls, more output choices.
 - **Self-evolution surface** — the engine corpus now carries 29 evolution-related logic blocks (`manage_evolution_composite`, `loop_evolve_ecosystem_temporal`, `_append_evolution_log`) plus the canonical hypothesis-ledger schema. Hosted endpoints expose these via the existing `search_intent` / `compose_stack` verbs.
 
 ---
@@ -92,7 +104,7 @@ Each returns a **SHA-256 verification receipt**. The anti-hallucination shield n
 | **`capabilities`** | Enumerate emergent cross-source chains the engine discovered without being asked. |
 | **`intent`** | Natural-language intent → emit a custom themed product from your atoms. |
 | **`doctor`** | Health probe across the hosted engine. |
-| **`tocc_recovery_status`** | Read-only TOCC recovery gate status. |
+| **`fuse_recovery_status`** | Read-only Fuse recovery gate status. |
 
 ### The 8 Engine v1 Tools (new in 1.0.0)
 

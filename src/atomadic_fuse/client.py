@@ -22,6 +22,14 @@ _DEFAULT_ENDPOINT = "https://fuse.atomadic.tech/v1"
 _DEFAULT_TIMEOUT_S = 60.0
 
 
+def _pkg_version() -> str:
+    try:
+        from importlib.metadata import version as _mv
+        return _mv("atomadic-fuse")
+    except Exception:
+        return "1.0.0"
+
+
 def _seed_root() -> "pathlib.Path":
     """Return the absolute path of the bundled `logic-base-seed/` directory.
 
@@ -214,10 +222,126 @@ class FuseClient:
             payload["workspace"] = workspace
         return self._post("logic_map", payload)
 
+    def langs(self) -> dict[str, Any]:
+        """List all supported language families grouped by emitter target."""
+        return self._post("langs", {})
+
+    def polyglot(
+        self,
+        name: str,
+        languages: str = "",
+        workspace: str | None = None,
+    ) -> dict[str, Any]:
+        """Emit a specific logic-base atom as polyglot code across language targets."""
+        payload: dict[str, Any] = {"name": name}
+        if languages:
+            payload["languages"] = languages
+        if workspace:
+            payload["workspace"] = workspace
+        return self._post("polyglot", payload)
+
+    def show(self, name: str, workspace: str | None = None) -> dict[str, Any]:
+        """Drill into one atom: full contract, source, and next_actions guidance."""
+        payload: dict[str, Any] = {"name": name}
+        if workspace:
+            payload["workspace"] = workspace
+        return self._post("show", payload)
+
+    # ── v1.1.0 tools: store governance + telemetry ───────────────────
+
+    def quickstart(
+        self,
+        directory: str,
+        output: str = "./_fuse_out",
+        permissive: bool = True,
+    ) -> dict[str, Any]:
+        """One-shot onboarding: scan → absorb → synthesize → emit for a directory."""
+        return self._post("quickstart", {
+            "directory": directory,
+            "output": output,
+            "permissive": bool(permissive),
+        })
+
+    def friction(
+        self,
+        workspace: str = "",
+        kind: str = "",
+        n: int = 50,
+        summary: bool = False,
+    ) -> dict[str, Any]:
+        """Read the friction telemetry log. Returns recent UX friction events."""
+        payload: dict[str, Any] = {"n": int(n), "summary": bool(summary)}
+        if workspace:
+            payload["workspace"] = workspace
+        if kind:
+            payload["kind"] = kind
+        return self._post("friction", payload)
+
+    def promote_hypotheses(
+        self,
+        workspace: str = "",
+        dry_run: bool = False,
+    ) -> dict[str, Any]:
+        """Promote hypothesis candidates in the logic-base to verified status."""
+        payload: dict[str, Any] = {"dry_run": bool(dry_run)}
+        if workspace:
+            payload["workspace"] = workspace
+        return self._post("promote_hypotheses", payload)
+
+    def promote_candidate(
+        self,
+        block_id: str,
+        workspace: str = "",
+    ) -> dict[str, Any]:
+        """Promote a specific candidate block by ID."""
+        payload: dict[str, Any] = {"block_id": block_id}
+        if workspace:
+            payload["workspace"] = workspace
+        return self._post("promote_candidate", payload)
+
+    def explain_lineage(
+        self,
+        block_id: str,
+        workspace: str = "",
+    ) -> dict[str, Any]:
+        """Show the full lineage tree for a block (composed_from + depends_on)."""
+        payload: dict[str, Any] = {"block_id": block_id}
+        if workspace:
+            payload["workspace"] = workspace
+        return self._post("explain_lineage", payload)
+
+    def lint_store(self, workspace: str = "") -> dict[str, Any]:
+        """Lint the logic-base for schema violations and stale references."""
+        payload: dict[str, Any] = {}
+        if workspace:
+            payload["workspace"] = workspace
+        return self._post("lint_store", payload)
+
+    def validate_store(self, workspace: str = "") -> dict[str, Any]:
+        """Full 11-gate validation sweep across all blocks in the logic-base."""
+        payload: dict[str, Any] = {}
+        if workspace:
+            payload["workspace"] = workspace
+        return self._post("validate_store", payload)
+
+    def deduplicate_store(self, workspace: str = "") -> dict[str, Any]:
+        """Remove exact-duplicate blocks (same dedupe_key) from the logic-base."""
+        payload: dict[str, Any] = {}
+        if workspace:
+            payload["workspace"] = workspace
+        return self._post("deduplicate_store", payload)
+
+    def rebuild_indexes(self, workspace: str = "") -> dict[str, Any]:
+        """Rebuild CNAE, fingerprint, lineage and composition indexes."""
+        payload: dict[str, Any] = {}
+        if workspace:
+            payload["workspace"] = workspace
+        return self._post("rebuild_indexes", payload)
+
     # ── HTTP plumbing ────────────────────────────────────────────────
 
     def _headers(self, extra: dict[str, str] | None = None) -> dict[str, str]:
-        h = {"Content-Type": "application/json", "User-Agent": "atomadic-fuse/1.0.0"}
+        h = {"Content-Type": "application/json", "User-Agent": f"atomadic-fuse/{_pkg_version()}"}
         if self.api_key:
             h["Authorization"] = f"Bearer {self.api_key}"
         if self.telemetry_opt_in:

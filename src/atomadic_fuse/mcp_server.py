@@ -164,6 +164,138 @@ def logic_map(workspace: str = "") -> Any:
     return _client.logic_map(workspace=(workspace or None))
 
 
+@mcp.tool()
+def langs() -> Any:
+    """List all supported language families grouped by emitter target."""
+    return _client.langs()
+
+
+@mcp.tool()
+def polyglot(name: str, languages: str = "", workspace: str = "") -> Any:
+    """Emit a specific logic-base atom as polyglot code across language targets."""
+    return _client.polyglot(name, languages=languages, workspace=(workspace or None))
+
+
+@mcp.tool()
+def show(name: str, workspace: str = "") -> Any:
+    """Drill into one atom: full contract, source, and next_actions guidance."""
+    return _client.show(name, workspace=(workspace or None))
+
+
+# ── v1.1.0 tools: store governance + telemetry ───────────────────────────────
+
+@mcp.tool()
+def quickstart(directory: str, output: str = "./_fuse_out", permissive: bool = True) -> Any:
+    """One-shot onboarding: scan a directory, absorb atoms, synthesize and emit products.
+
+    The fastest path from a messy repo to a shippable package. Permissive mode
+    (default) harvests all functions regardless of CNAE naming — ideal for first runs.
+
+    Args:
+        directory: absolute path of the source tree to compile.
+        output: output directory for emitted products (default ./_fuse_out).
+        permissive: if True (default), harvest any function found — behavior-based
+            classification proposes canonical CNAE names automatically.
+    """
+    return _client.quickstart(directory, output=output, permissive=permissive)
+
+
+@mcp.tool()
+def friction(workspace: str = "", kind: str = "", n: int = 50, summary: bool = False) -> Any:
+    """Read the Friction Protocol telemetry log.
+
+    The Friction Protocol records every UX friction event (zero-result hints,
+    errors, empty inputs, bad paths) so you can see what's causing the most
+    friction in your workflow. Returns recent events or a summary rollup.
+
+    Args:
+        workspace: absolute path to the logic-base workspace; '' auto-detects.
+        kind: filter by event kind (e.g. 'zero_atoms', 'workspace_missing').
+        n: max events to return (default 50).
+        summary: if True, return counts grouped by kind instead of raw events.
+    """
+    return _client.friction(workspace=(workspace or None), kind=(kind or ""), n=n, summary=summary)
+
+
+@mcp.tool()
+def promote_hypotheses(workspace: str = "", dry_run: bool = False) -> Any:
+    """Promote hypothesis candidates in the logic-base to verified status.
+
+    Scans all candidate blocks, runs the 11-gate promotion pipeline, and
+    writes canonical blocks. Use dry_run=True to preview what would be promoted
+    without making changes.
+
+    Args:
+        workspace: absolute path to the logic-base workspace; '' auto-detects.
+        dry_run: if True, report what would be promoted without writing.
+    """
+    return _client.promote_hypotheses(workspace=(workspace or None), dry_run=dry_run)
+
+
+@mcp.tool()
+def promote_candidate(block_id: str, workspace: str = "") -> Any:
+    """Promote a specific candidate block by ID through the 11-gate pipeline.
+
+    Args:
+        block_id: the lb: prefixed block ID to promote.
+        workspace: absolute path to the logic-base workspace; '' auto-detects.
+    """
+    return _client.promote_candidate(block_id, workspace=(workspace or None))
+
+
+@mcp.tool()
+def explain_lineage(block_id: str, workspace: str = "") -> Any:
+    """Show the full lineage tree for a block — composed_from + depends_on paths.
+
+    Args:
+        block_id: the lb: prefixed block ID or CNAE name to trace.
+        workspace: absolute path to the logic-base workspace; '' auto-detects.
+    """
+    return _client.explain_lineage(block_id, workspace=(workspace or None))
+
+
+@mcp.tool()
+def lint_store(workspace: str = "") -> Any:
+    """Lint the logic-base for schema violations, stale references, and tier-law breaks.
+
+    Args:
+        workspace: absolute path to the logic-base workspace; '' auto-detects.
+    """
+    return _client.lint_store(workspace=(workspace or None))
+
+
+@mcp.tool()
+def validate_store(workspace: str = "") -> Any:
+    """Run the full 11-gate validation sweep across every block in the logic-base.
+
+    Args:
+        workspace: absolute path to the logic-base workspace; '' auto-detects.
+    """
+    return _client.validate_store(workspace=(workspace or None))
+
+
+@mcp.tool()
+def deduplicate_store(workspace: str = "") -> Any:
+    """Remove exact-duplicate blocks (same dedupe_key) from the logic-base.
+
+    Args:
+        workspace: absolute path to the logic-base workspace; '' auto-detects.
+    """
+    return _client.deduplicate_store(workspace=(workspace or None))
+
+
+@mcp.tool()
+def rebuild_indexes(workspace: str = "") -> Any:
+    """Rebuild CNAE, fingerprint, lineage and composition indexes from scratch.
+
+    Call this after bulk imports or manual shard edits to restore index consistency.
+
+    Args:
+        workspace: absolute path to the logic-base workspace; '' auto-detects.
+    """
+    return _client.rebuild_indexes(workspace=(workspace or None))
+
+
 def launch() -> None:
     mcp.run()
 

@@ -195,7 +195,7 @@ Each returns a SHA-256 receipt — the anti-hallucination shield other MCPs cann
 | `capabilities` | emergent cross-source chains the engine discovered |
 | `intent` | natural-language intent → custom themed product |
 | `doctor` | hosted engine health probe |
-| `tocc_recovery_status` | TOCC recovery gate status (read-only) |
+| `fuse_recovery_status` | Fuse recovery gate status (read-only) |
 
 ---
 

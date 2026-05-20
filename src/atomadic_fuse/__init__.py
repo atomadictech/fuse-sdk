@@ -21,4 +21,4 @@ __all__ = [
     "FuseClient", "FuseError", "DecisionNeeded", "PaymentRequired",
     "seed_path",
 ]
-__version__ = "1.0.0"
+__version__ = "1.1.0"
