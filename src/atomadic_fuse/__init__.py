@@ -12,4 +12,4 @@ from .client import FuseClient
 from .exceptions import FuseError, DecisionNeeded, PaymentRequired
 
 __all__ = ["FuseClient", "FuseError", "DecisionNeeded", "PaymentRequired"]
-__version__ = "0.3.0"
+__version__ = "0.3.1"
