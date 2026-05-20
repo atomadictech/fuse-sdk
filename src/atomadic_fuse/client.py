@@ -254,8 +254,7 @@ class FuseClient:
             detail: if True, return full contract + lineage
         """
         payload: dict[str, Any] = {"block_id": block_id}
-        if detail:
-            payload["detail"] = detail
+        payload["detail"] = bool(detail)
         return self._post("explain_block", payload)
 
     def usage_stats(
@@ -311,8 +310,7 @@ class FuseClient:
             payload["output"] = output
         if workspace:
             payload["workspace"] = workspace
-        if dry_run:
-            payload["dry_run"] = dry_run
+        payload["dry_run"] = bool(dry_run)
         return self._post("synthesize", payload)
 
     def emit(
@@ -441,8 +439,7 @@ class FuseClient:
         payload: dict[str, Any] = {"directory": directory}
         if output:
             payload["output"] = output
-        if permissive:
-            payload["permissive"] = permissive
+        payload["permissive"] = bool(permissive)
         return self._post("quickstart", payload)
 
     def friction(
@@ -466,8 +463,7 @@ class FuseClient:
         if kind:
             payload["kind"] = kind
         payload["n"] = int(n)
-        if summary:
-            payload["summary"] = summary
+        payload["summary"] = bool(summary)
         return self._post("friction", payload)
 
     def promote_hypotheses(
@@ -484,8 +480,7 @@ class FuseClient:
         payload: dict[str, Any] = {}
         if workspace:
             payload["workspace"] = workspace
-        if dry_run:
-            payload["dry_run"] = dry_run
+        payload["dry_run"] = bool(dry_run)
         return self._post("promote_hypotheses", payload)
 
     def promote_candidate(
