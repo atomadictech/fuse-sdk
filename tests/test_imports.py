@@ -4,7 +4,13 @@ from __future__ import annotations
 
 def test_package_imports():
     import atomadic_fuse
-    assert atomadic_fuse.__version__ == "0.1.0"
+    # Version-agnostic SemVer-shaped check (don't pin a literal — same drift
+    # pattern as the Nexus SDK 0.1.0->0.2.0 silent miss).
+    import re
+    assert isinstance(atomadic_fuse.__version__, str)
+    assert re.match(r"^\d+\.\d+\.\d+", atomadic_fuse.__version__), (
+        f"version {atomadic_fuse.__version__!r} not SemVer-shaped"
+    )
 
 
 def test_client_class_exists():

@@ -22,6 +22,19 @@ _DEFAULT_ENDPOINT = "https://fuse.atomadic.tech/v1"
 _DEFAULT_TIMEOUT_S = 60.0
 
 
+def _seed_root() -> "pathlib.Path":
+    """Return the absolute path of the bundled `logic-base-seed/` directory.
+
+    The SDK package ships a small seed catalogue of verified CNAE atoms so
+    callers can do an offline-only walk-through before pointing at the
+    hosted engine. The directory lives alongside this module file.
+
+    Returns a ``pathlib.Path`` (callers that need a ``str`` can cast).
+    """
+    import pathlib
+    return pathlib.Path(__file__).resolve().parent / "logic-base-seed"
+
+
 class FuseClient:
     """Synchronous client for the hosted Atomadic Fuse engine.
 
@@ -40,6 +53,7 @@ class FuseClient:
         api_key: str | None = None,
         endpoint: str | None = None,
         timeout: float = _DEFAULT_TIMEOUT_S,
+        telemetry_opt_in: bool = False,
     ):
         self.api_key = (
             api_key
@@ -48,6 +62,15 @@ class FuseClient:
         )
         self.endpoint = endpoint or _DEFAULT_ENDPOINT
         self.timeout = timeout
+        # Telemetry opt-in: when True, the client may send anonymized
+        # CNAE/tier/domain/language metadata in request headers. Off by
+        # default; the CLI exposes a `--telemetry` flag and the env var
+        # ATOMADIC_FUSE_TELEMETRY=1 also enables it. Never sends code,
+        # intent text, or secrets.
+        self.telemetry_opt_in = bool(telemetry_opt_in) or (
+            os.environ.get("ATOMADIC_FUSE_TELEMETRY", "").strip().lower()
+            in ("1", "true", "yes", "on")
+        )
 
     # ── Verb-level methods ────────────────────────────────────────────
 
@@ -133,12 +156,72 @@ class FuseClient:
         """Token-savings dashboard: corpus size, block counts, savings estimate."""
         return self._post("usage_stats", {})
 
+    # ── 8 engine tools (v1.0.0) — mirror of local fuse-engine-mcp surface ────
+    # Until the hosted Wave-B backend lights up full execution, these proxy
+    # to endpoints that return curated/stub responses with `local_route`
+    # pointing at the local fuse-engine-mcp binary for full execution.
+
+    def scan(self, directory: str,
+             languages: str = "python,typescript,rust") -> dict[str, Any]:
+        """Walk a directory and return CNAE atoms found in source files."""
+        return self._post("scan", {"directory": directory, "languages": languages})
+
+    def discover(self, workspace: str | None = None) -> dict[str, Any]:
+        """Cluster, score, and discover emergent dependency chains."""
+        payload: dict[str, Any] = {}
+        if workspace:
+            payload["workspace"] = workspace
+        return self._post("discover", payload)
+
+    def synthesize(self, output: str = "./synthesized",
+                   workspace: str | None = None,
+                   dry_run: bool = False) -> dict[str, Any]:
+        """Full synthesis pipeline: scan → absorb → cluster → score → chain → theme → emit."""
+        payload: dict[str, Any] = {"output": output, "dry_run": bool(dry_run)}
+        if workspace:
+            payload["workspace"] = workspace
+        return self._post("synthesize", payload)
+
+    def emit(self, output: str, workspace: str | None = None) -> dict[str, Any]:
+        """Emit product directory scaffolds for ranked products (T0-T5)."""
+        payload: dict[str, Any] = {"output": output}
+        if workspace:
+            payload["workspace"] = workspace
+        return self._post("emit", payload)
+
+    def validate(self, name: str) -> dict[str, Any]:
+        """Validate a CNAE name against the canonical action_entity_scope vocabulary."""
+        return self._post("validate", {"name": name})
+
+    def status(self, workspace: str | None = None) -> dict[str, Any]:
+        """Read-only logic-base status: atom count, shards, ledgers, manifest."""
+        payload: dict[str, Any] = {}
+        if workspace:
+            payload["workspace"] = workspace
+        return self._post("status", payload)
+
+    def search(self, query: str, workspace: str | None = None) -> dict[str, Any]:
+        """Substring + CNAE search across the logic-base."""
+        payload: dict[str, Any] = {"query": query}
+        if workspace:
+            payload["workspace"] = workspace
+        return self._post("search", payload)
+
+    def logic_map(self, workspace: str | None = None) -> dict[str, Any]:
+        """Return the full composition graph of the logic-base (atom → deps by tier)."""
+        payload: dict[str, Any] = {}
+        if workspace:
+            payload["workspace"] = workspace
+        return self._post("logic_map", payload)
+
     # ── HTTP plumbing ────────────────────────────────────────────────
 
     def _headers(self, extra: dict[str, str] | None = None) -> dict[str, str]:
-        h = {"Content-Type": "application/json", "User-Agent": "atomadic-fuse/0.3.3"}
+        h = {"Content-Type": "application/json", "User-Agent": "atomadic-fuse/1.0.0"}
         if self.api_key:
             h["Authorization"] = f"Bearer {self.api_key}"
+        if self.telemetry_opt_in:
+            h["X-Atomadic-Telemetry"] = "opt-in"
         if extra:
             h.update(extra)
         return h
