@@ -52,9 +52,13 @@ That's a real call. To the live engine. Returning real data. From a fresh `pip i
 
 ## What you get — 14 MCP tools, one engine
 
+> 🟣 **In plain English:** Think of these as 14 buttons your AI assistant gets to push. Six of them are new superpowers (the hashes-on-every-answer ones). Eight are the classic verbs that turn messy repos into clean shippable products. Every button returns a receipt so your agent can prove the answer is real and not made up.
+
 ### The 6 Superhero Tools
 
 Each returns a **SHA-256 verification receipt**. The anti-hallucination shield no other MCP can provide.
+
+> 🟣 **What a "receipt" means:** every answer comes back with a fingerprint (a SHA-256 hash) of the exact source it pulled from. If the agent ever says *"the function does X"*, you can re-check that hash and prove it came from real code — not from the model's imagination.
 
 | Tool | What it does |
 |---|---|
@@ -82,6 +86,8 @@ Each returns a **SHA-256 verification receipt**. The anti-hallucination shield n
 
 ## Why it works — the math
 
+> 🟣 **In plain English:** Most AI tools tune their confidence knob by trying things until it looks right. Fuse anchors its confidence numbers to constants from 60-year-old published mathematics — numbers nobody, including us, can fudge. If the engine says *"I'm 99.84% sure this function hashes bytes"*, that 99.84% comes from lattice geometry, not from a guess. The signal-to-noise floor (`σ₀`) is just the minimum gap between two real points in a 24-dimensional crystal — below that gap, the engine refuses to answer rather than make something up.
+
 Fuse classifies functions by what they **do**, not what they are **named**. A function named `helper_42` that hashes bytes gets classified as `build_fingerprint_static` with confidence `TAU_TRUST = 1820/1823 ≈ 0.9984` — a constant derived from formally-verified lattice mathematics (Niemeier K₂₄ orbit count). Functions below the noise floor `σ₀ = 1/√196560` are dropped as suspected confabulation.
 
 The engine **self-emits** — it can compile its own source byte-identically. Not a marketing claim; a regression-tested property under the `T4 fixed-point` test suite. The Rust artifact hash `703b14ba…` is the SAME across every emit run. **gen1 == gen2 == gen3.**
@@ -99,6 +105,8 @@ These are not tuned hyperparameters. They are externally-verified scalar constan
 ---
 
 ## The token-savings math — verified live
+
+> 🟣 **In plain English:** When an AI assistant has to read whole codebases to answer a question, it burns ~3.2 million tokens (a stack of paper a few feet tall, every time). Fuse pre-chews everything down to the one block that answers the question — about 450 tokens (a sticky note). That's the same answer for 1/7000th the cost. If your team runs 100 agent sessions a day, that's roughly $30,641 a day in tokens you don't have to spend.
 
 The live engine just told us: **`savings_factor: 7057x`**, **`savings_percent: 99.99%`**, **`estimated_daily_savings_100_sessions: $30,641`**.
 
@@ -185,6 +193,8 @@ fuse usage-stats
 
 ## Pricing
 
+> 🟣 **In plain English:** Free to try, no signup. Starter is a one-time $8 for 500 calls — that's the version most teams buy. The grown-up tiers add quotas, sub-keys, and audit. And if you're an *AI agent* spending its own money, you can pay per-call in USDC stablecoin with no human in the loop — that's what x402 is. No card on file, no monthly bill, the agent settles in cents on Base.
+
 | Tier | Quota | Price | Notes |
 |---|---|---|---|
 | **Free** | 3 calls/day per verb, BYO API key for higher tiers | **$0** | No signup. Per-IP cap. |
@@ -214,6 +224,8 @@ fuse usage-stats
 
 ## Sibling product — Atomadic Nexus
 
+> 🟣 **In plain English:** Fuse turns messy code into shippable products. Nexus is its partner — it's the bouncer at the door. Before one of your agents forwards a request, spends money, or signs a contract, Nexus checks it: *is this prompt safe, is the answer real, is the counterparty trustworthy?* You use Fuse to build the product, Nexus to keep it from being tricked.
+
 **[Atomadic Nexus SDK](https://github.com/atomadictech/nexus-sdk)** — the trust layer that pairs with Fuse. 36 MCP tools across 7 families:
 
 - **TRUST** — `trust_gate`, `hallucination_oracle`, `prompt_inject_scan`, `drift_check`
@@ -235,6 +247,8 @@ pip install atomadic-fuse atomadic-nexus-sdk
 ---
 
 ## Architecture
+
+> 🟣 **In plain English:** Three boxes, top to bottom. The top box is the math engine that holds 5,499 verified building blocks of logic. The middle box is the live website (`fuse.atomadic.tech`) that turns those blocks into answers over HTTPS. The bottom box is this Python library — when you `pip install atomadic-fuse`, you're getting the doorbell to the middle box. You never talk to the top box directly; you don't need to.
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
