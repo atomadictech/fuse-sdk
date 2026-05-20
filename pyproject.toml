@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "atomadic-fuse"
-version = "0.1.0"
+version = "0.3.0"
 description = "Atomadic Fuse — Spaghetti to Shippable. Per-repo monadic compiler with polyglot AST scan."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -39,8 +39,8 @@ fuse-mcp = "atomadic_fuse.mcp_server:launch"
 
 [project.urls]
 Homepage    = "https://atomadic.tech"
-Source      = "https://github.com/atomadictech/atomadic-fuse"
-Issues      = "https://github.com/atomadictech/atomadic-fuse/issues"
+Source      = "https://github.com/atomadictech/fuse-sdk"
+Issues      = "https://github.com/atomadictech/fuse-sdk/issues"
 Pricing     = "https://atomadic.tech/pricing"
 SourceOfTruth = "https://sot.atomadic.tech/SoT.json"
 

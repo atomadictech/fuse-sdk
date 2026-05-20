@@ -6,8 +6,7 @@ either use an API key (Pro/Team subscription) or x402 micropayments
 
 This is a thin HTTP wrapper. The engine internals (CNAE classifier,
 5-tier monadic lattice, Codex-anchored confidence) live server-side
-on the private atomadic-transmute engine and are not shipped in the
-public SDK.
+on the private Fuse engine and are not shipped in the public SDK.
 """
 from __future__ import annotations
 
@@ -56,7 +55,7 @@ class FuseClient:
         self,
         repo_root: str,
         output_root: str = "./_fuse_out",
-        max_chains: int = 5,
+        max_chains: int = 500,
     ) -> dict[str, Any]:
         """Marquee primitive: messy repo → clean shippable package."""
         return self._post("compile", {
@@ -99,10 +98,46 @@ class FuseClient:
         """Health probe across the hosted engine workspace."""
         return self._post("doctor", {})
 
+    # ── Superhero tools (v0.2.0) ─────────────────────────────────────
+
+    def verify_block(self, block_id: str) -> dict[str, Any]:
+        """Anti-hallucination shield: returns a block with its SHA-256 verification receipt."""
+        return self._post("verify-block", {"block_id": block_id})
+
+    def search_intent(self, description: str, tier: str | None = None,
+                      limit: int = 10) -> dict[str, Any]:
+        """Semantic search: describe what you need, get matching verified blocks."""
+        payload: dict[str, Any] = {"description": description, "limit": limit}
+        if tier:
+            payload["tier"] = tier
+        return self._post("search-intent", payload)
+
+    def compose_stack(self, intent: str, target_language: str | None = None) -> dict[str, Any]:
+        """Walk the full tier dependency chain (T6→T0) for an intent."""
+        payload: dict[str, Any] = {"intent": intent}
+        if target_language:
+            payload["target_language"] = target_language
+        return self._post("compose-stack", payload)
+
+    def emit_corpus(self, target_language: str, target_dir: str | None = None) -> dict[str, Any]:
+        """Emit the complete verified corpus as a shippable package in one call."""
+        payload: dict[str, Any] = {"target_language": target_language}
+        if target_dir:
+            payload["target_dir"] = target_dir
+        return self._post("emit-corpus", payload)
+
+    def explain_block(self, block_id: str, detail: bool = False) -> dict[str, Any]:
+        """Context-aware explanation of a logic block's contract and dependencies."""
+        return self._post("explain-block", {"block_id": block_id, "detail": detail})
+
+    def usage_stats(self) -> dict[str, Any]:
+        """Token savings dashboard: corpus size, block counts, estimated savings."""
+        return self._post("usage-stats", {})
+
     # ── HTTP plumbing ────────────────────────────────────────────────
 
     def _headers(self, extra: dict[str, str] | None = None) -> dict[str, str]:
-        h = {"Content-Type": "application/json", "User-Agent": "atomadic-fuse/0.1.0"}
+        h = {"Content-Type": "application/json", "User-Agent": "atomadic-fuse/0.3.0"}
         if self.api_key:
             h["Authorization"] = f"Bearer {self.api_key}"
         if extra:

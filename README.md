@@ -109,6 +109,59 @@ fuse <verb> [args...]
 
 Eighty-plus additional SLS-lineage verbs are reachable as deferred shims with full source provenance — they expose the upstream surface without losing the breadcrumb trail.
 
+
+
+## The 6 Superhero Tools (v0.3.0)
+
+Six new tools elevate the SDK from "lookup wrapper" to "agent capability layer." Each returns a SHA-256 verification receipt with every response — the anti-hallucination shield no other MCP can provide.
+
+| Tool | What it does |
+|---|---|
+| `verify_block` | **Anti-hallucination shield.** Returns block + hash receipt. Agent can prove `this isn't hallucinated — it's hash 703b14ba…`. |
+| `search_intent` | **Smart context.** Natural-language semantic search across the verified corpus. Returns only what fits — pre-composed. |
+| `compose_stack` | **Composability engine.** Full tier dependency walk (T6→T0). Ask for a feature, get the whole stack. |
+| `emit_corpus` | **Polyglot emit.** One call emits a complete buildable + testable package in any of 6 languages. |
+| `explain_block` | **Context budget manager.** Compact or detailed explanation, sized to the agent's remaining window. |
+| `usage_stats` | **Token-savings dashboard.** Subscribers see ROI in real time. |
+
+``python
+from atomadic_fuse import FuseClient
+
+c = FuseClient()
+
+# Anti-hallucination — every response carries a hash receipt
+result = c.verify_block("lb:t2:compose_path_composite:bd7e1d030ef5")
+print(result["content_hash"])
+
+# Smart context — describe what you need
+matches = c.search_intent("validate user input and route it", tier="t2", limit=5)
+
+# Composability — full stack for a feature
+stack = c.compose_stack("build a path-validation feature", target_language="rust")
+
+# Polyglot emit — one call, complete package
+pkg = c.emit_corpus("python", target_dir="./out")
+
+# Context budget — adaptive explanation
+explanation = c.explain_block("lb:t1:normalize_path_pure:abc", detail=False)
+
+# Token math
+stats = c.usage_stats()
+print(f"Saved {stats['tokens_saved']} tokens this session")
+``
+
+### The token-savings math
+
+| Without Fuse MCP | With Fuse MCP |
+|---|---|
+| Agent hallucinates code | Every block hash-verified |
+| 3.2M tokens per lookup | 450 tokens, exact match |
+| Knows 1 language well | 6 languages, all tested |
+| One function at a time | Full tier-chain composition |
+| **\/day in tokens** | **\.20/day** |
+
+The Free tier alone saves subscribers ~\/day in tokens vs raw lookups. Builder pays for itself in the first API call.
+
 ## MCP server
 
 Drop Fuse into any MCP-aware client:
