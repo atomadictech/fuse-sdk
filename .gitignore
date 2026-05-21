@@ -35,3 +35,9 @@ htmlcov/
 # Local secrets
 .env
 *.local
+
+# Logic-base runtime store (only logic-base-seed/ inside src/ ships with the package)
+logic-base/
+
+# Backup files from heal operations
+*.bak
