@@ -310,6 +310,54 @@ fuse usage-stats
 
 ---
 
+## Capability matrix — what's in the SDK vs. what's gated
+
+> **The hammer is available. The nails are the moat.**
+>
+> Every developer who installs `pip install atomadic-fuse` gets the same deterministic synthesis engine Atomadic runs internally — scan, absorb, discover, synthesize, emit, certify, verify, round-trip. The engine is open.
+>
+> Without a verified atom library, however, the engine composes from an empty base. The 12,584-atom Atomadic logic base — harvested and promoted across years, dozens of languages, and hundreds of domains — is what makes one-call synthesis possible. **The logic base is the IP.**
+
+### Tier boundary
+
+The engine is stratified into 8 tiers. **T5 and above is internal tooling only** — not available in the public SDK, not exposed on any public MCP endpoint.
+
+| Tier | Label | SDK access |
+|------|-------|-----------|
+| T0 | Pure Constants | Public SDK |
+| T1 | Pure Transforms | Public SDK |
+| T2 | Composite Logic | Public SDK |
+| T3 | Stateful Pipelines | Public SDK |
+| T4 | Orchestration / CLI / MCP | Public SDK ← **ceiling** |
+| T5 | Ecosystem | Internal only |
+| T6 | Ecosystem Management | Internal only |
+| T7 | Release | Internal only — payments, deploy, publish, DNS |
+
+T7 is the apex tier. It wires Stripe and x402 subscriptions, creates and publishes products, updates atomadic.tech, deploys Cloudflare Workers, manages DNS, pushes to npm / PyPI / crates.io, and handles customer onboarding. None of this is customer-facing tooling.
+
+### Feature matrix
+
+| Capability | Public SDK | Enterprise / Gated |
+|------------|-----------|-------------------|
+| **Search logic base** | ✓ Read-only, own atoms only | ✓ Full 12,584+ Atomadic atoms |
+| **`refine_intent`** | ✓ | ✓ |
+| **Emit products** | ✓ From own harvested / seeded atoms | ✓ Full Atomadic logic base |
+| **`certify` / `verify`** | ✓ Basic, own code | ✓ Extended enterprise attestation |
+| **Round-trip verification** | ✓ Own emits | ✓ |
+| **MCP calls** | Rate-limited (see Pricing) | No rate limits |
+| **Tier ceiling** | T4 | T4 for product; T5–T7 internal |
+| **E² (emitter emitter)** | ✗ Cannot generate new emitters | ✓ Internal only |
+| **Self-emit the engine** | ✗ Cannot emit copies of Fuse | ✓ Internal only |
+| **Harvest external repos** | Own repos only | ✓ Curated pipelines |
+| **Hot-patch MCP tools** | ✗ | ✓ Internal only |
+| **Evolve / heal loops** | ✗ | ✓ Internal only |
+| **Spawn child agents** | ✗ | ✓ Internal only |
+| **Payment wiring / deploy** | ✗ T7 not exposed | ✓ Internal only |
+
+The tier boundary is not a configuration flag — it is an architectural property of the engine. T4 blocks cannot depend on T5–T7 blocks; T4 SDK tooling structurally cannot surface T5–T7 capabilities. The IP moat is monadic.
+
+---
+
 ## Compared to the alternatives
 
 | | Frameworks (LangChain, AutoGen) | Code-gen (Copilot, Cursor) | **Atomadic Fuse** |
