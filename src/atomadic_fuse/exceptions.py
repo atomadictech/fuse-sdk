@@ -1,20 +1,53 @@
-# emitted-by: lb:t5:synthesize_template_sovereign:f5105569
-# emitter-tier: t3 target-tier: t2 lang: python cnae: emit_module_composite
-# intent: Replace AST-detected stub logic in exceptions.py::FuseError with a complete deterministic implementation that preserves the module contract. AST evidence: symbol has no executable body  Lattice-derived enhancements (existing related atoms within Hamming 8):   - Consider bind_cache_pure (t0, d=1): Absorbed source function 'bind_cache_pure' (bind cache @ pure scope) from bind_cache_pure.ts   - Consider build_product_pure (t0, d=1): Absorbed source function 'build_product_pure' (build product @ pure scope) from tier_1_static.py   - Consider build_value_pure (t0, d=1): Absorbed source function 'build_value_pure' (build value @ pure scope) from __main__.py
-"""
-CNAE: emit_module_composite
-Tier: t2
-Intent: Replace AST-detected stub logic in exceptions.py::FuseError with a complete deterministic implementation that preserves the module contract. AST evidence: symbol has no executable body  Lattice-derived enhancements (existing related atoms within Hamming 8):   - Consider bind_cache_pure (t0, d=1): Absorbed source function 'bind_cache_pure' (bind cache @ pure scope) from bind_cache_pure.ts   - Consider build_product_pure (t0, d=1): Absorbed source function 'build_product_pure' (build product @ pure scope) from tier_1_static.py   - Consider build_value_pure (t0, d=1): Absorbed source function 'build_value_pure' (build value @ pure scope) from __main__.py
-"""
+"""Typed exception surface for the Atomadic Fuse SDK."""
+from __future__ import annotations
 
-def emit_module_composite(input_data, atoms=None) -> dict:
-    """emit a module (composite): chain tier-1 atoms over the input."""
-    if not isinstance(atoms, list):
-        return {"ok": False, "result": input_data, "steps": 0}
-    result = input_data
-    steps = 0
-    for atom in atoms:
-        if callable(atom):
-            result = atom(result)
-            steps += 1
-    return {"ok": True, "result": result, "steps": steps}
+from typing import Any
+
+
+class FuseError(RuntimeError):
+    """Base error for hosted Fuse API failures."""
+
+    def __init__(
+        self,
+        message: str,
+        status_code: int | None = None,
+        payload: dict[str, Any] | None = None,
+    ) -> None:
+        super().__init__(message)
+        self.status_code = status_code
+        self.payload = payload or {}
+
+
+class DecisionNeeded(FuseError):
+    """Raised when the engine requests an explicit caller decision."""
+
+    def __init__(
+        self,
+        decision_id: str,
+        prompt: str,
+        options: list[str],
+        message: str = "Decision required",
+        payload: dict[str, Any] | None = None,
+    ) -> None:
+        super().__init__(message, status_code=200, payload=payload)
+        self.decision_id = decision_id
+        self.prompt = prompt
+        self.options = options
+
+
+class PaymentRequired(FuseError):
+    """HTTP 402: fund via x402/credits and retry."""
+
+    def __init__(
+        self,
+        message: str = "Payment required",
+        payment_url: str | None = None,
+        amount_usdc: str | None = None,
+        payload: dict[str, Any] | None = None,
+    ) -> None:
+        super().__init__(message, status_code=402, payload=payload)
+        self.payment_url = payment_url
+        self.amount_usdc = amount_usdc
+
+
+__all__ = ["FuseError", "DecisionNeeded", "PaymentRequired"]
