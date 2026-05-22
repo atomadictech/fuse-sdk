@@ -1,12 +1,14 @@
 # MCP Quickstart
 
+Use Fuse MCP when you want an agent host or IDE to call the same public Fuse workflows available through the Python SDK.
+
 ## Install
 
 ```bash
 pip install "atomadic-fuse[mcp]"
 ```
 
-## Local stdio MCP configuration
+## Local stdio configuration
 
 ```json
 {
@@ -18,21 +20,32 @@ pip install "atomadic-fuse[mcp]"
 }
 ```
 
-## Hosted endpoint
+## Hosted MCP endpoint
 
 - `https://fuse.atomadic.tech/mcp`
 
-Use local stdio mode when you want local process ownership and environment control. Use the hosted endpoint when you want a managed remote MCP surface.
+## Which mode should you use?
+
+Use local stdio MCP when you want:
+- local process ownership
+- local environment control
+- explicit shell and secret handling
+
+Use hosted MCP when you want:
+- a managed remote endpoint
+- less local setup
+- a simpler path for distributed agent clients
 
 ## Recommended smoke checks
 
 After setup:
-1. confirm the MCP host can launch `fuse-mcp`
-2. confirm the tool list includes `scan`, `synthesize`, `verify_block`, and `usage_stats`
-3. run a small read-only call such as `usage_stats`
+1. confirm the host can launch `fuse-mcp`
+2. confirm the tool list includes public workflows you expect to use
+3. run a small read-only or health-oriented request such as `doctor` or `usage_stats`
 
 ## Troubleshooting
 
-- `command not found`: ensure the Python environment that owns `atomadic-fuse[mcp]` is active
+- command not found: make sure the environment that owns `atomadic-fuse[mcp]` is active
 - import failure: reinstall the package in the active environment
-- connection failure: verify network reachability for hosted mode or path resolution for stdio mode
+- hosted connection failure: verify endpoint reachability and credentials
+- tool mismatch: compare installed package version with current docs and examples

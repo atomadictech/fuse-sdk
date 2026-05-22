@@ -1,39 +1,61 @@
 # Architecture
 
-## Components
+This document describes the public architecture of Fuse SDK.
 
-- SDK client: [src/atomadic_fuse/client.py](../src/atomadic_fuse/client.py)
-- MCP server: [src/atomadic_fuse/mcp_server.py](../src/atomadic_fuse/mcp_server.py)
-- Exceptions: [src/atomadic_fuse/exceptions.py](../src/atomadic_fuse/exceptions.py)
-- Examples: [examples](../examples)
-- Seed logic-base: [src/atomadic_fuse/logic-base-seed](../src/atomadic_fuse/logic-base-seed)
+## Plain-English View
 
-## Request Flow
+Fuse has three visible layers:
+- the Python package developers import
+- the CLI and MCP tools they launch locally
+- the hosted Fuse endpoint those tools talk to
 
-1. A caller invokes a `FuseClient` method.
-2. The client serializes a request payload and headers.
-3. The hosted endpoint processes the request.
-4. The response is converted into either structured output or a typed exception.
-5. Verification-oriented methods return receipt-bearing payloads suitable for audit and automation.
+## Technical View
 
-## MCP Flow
+### Python package
+
+Source files:
+- [src/atomadic_fuse/client.py](../src/atomadic_fuse/client.py)
+- [src/atomadic_fuse/cli.py](../src/atomadic_fuse/cli.py)
+- [src/atomadic_fuse/mcp_server.py](../src/atomadic_fuse/mcp_server.py)
+- [src/atomadic_fuse/exceptions.py](../src/atomadic_fuse/exceptions.py)
+
+Bundled assets:
+- [examples](../examples)
+- [src/atomadic_fuse/logic-base-seed](../src/atomadic_fuse/logic-base-seed)
+
+### Request flow
+
+1. A caller invokes a `FuseClient` method or CLI verb.
+2. The SDK constructs a typed request payload.
+3. The hosted Fuse endpoint processes the request.
+4. The SDK returns structured JSON-like data or raises a typed exception.
+5. Verification-oriented calls can then be used to inspect health, validity, or traceability.
+
+### MCP flow
 
 1. An MCP host launches `fuse-mcp`.
-2. MCP tool invocations map to the underlying client surface.
+2. MCP tool calls map to the public client surface.
 3. Results are returned through stdio JSON-RPC.
-
-This gives agent runtimes and direct Python callers a shared operational surface.
 
 ## Public Boundary
 
-This repository documents the public package contract, not private engine internals. The architectural material here is limited to the observable client, MCP, and hosted request path needed for integration.
+This architecture document is intentionally limited to observable public behavior.
 
-## Package Metadata
+Included here:
+- package structure
+- request flow
+- MCP flow
+- public package metadata and examples
 
-Current package metadata is defined in [pyproject.toml](../pyproject.toml).
+Excluded here:
+- unpublished internal engine details
+- private orchestration layers not required to use the SDK
 
-Notable public characteristics:
+## Packaging Facts
+
+Current public package facts from [pyproject.toml](../pyproject.toml):
+- package name: `atomadic-fuse`
 - Python 3.10+
-- `httpx` runtime dependency
-- optional MCP extra via `mcp[cli]`
-- optional GUI extra via `gradio`
+- runtime dependency: `httpx`
+- optional extras: `mcp`, `gui`
+- CLI entrypoints: `fuse`, `fuse-mcp`

@@ -1,23 +1,23 @@
-# Comparison
+# Comparison Guide
 
-This document compares public product shape only.
+This document compares product shape, not private internals.
 
-## Fuse SDK emphasis
+## What Makes Fuse Distinct Publicly
 
-Fuse SDK emphasizes:
-- typed Python client access
-- MCP compatibility through `fuse-mcp`
-- explicit verification-oriented methods
-- store-health and promotion workflow helpers
+Fuse SDK combines:
+- a typed Python client
+- a public CLI
+- a stdio MCP server
+- verification-oriented methods in the same surface as build-oriented methods
+- bundled seed data for local bootstrapping
 
-## Evaluation Criteria
+## Questions To Ask When Comparing Tools
 
-When comparing with other developer or agent tooling, evaluate:
-- whether the tool has a typed SDK surface
-- whether it supports MCP directly
-- whether verification is first-class or optional
-- whether operational diagnostics are explicit
-- whether public docs separate verifiable claims from internal claims
+- does the tool expose a typed SDK or only raw HTTP examples?
+- does it support MCP directly?
+- are verification and health methods first-class?
+- does it include store maintenance and promotion helpers?
+- does the documentation separate observable public claims from internal claims?
 
 ## Documentation Rule
 

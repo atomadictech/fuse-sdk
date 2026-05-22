@@ -1,23 +1,42 @@
-# Fuse SDK Documentation
+# Fuse SDK Docs
 
-This directory contains the public-safe documentation set for Atomadic Fuse SDK.
+This directory is the public documentation set for Atomadic Fuse SDK.
 
-## Core Documents
+Use this docs set if you want to understand Fuse at three levels:
+- what it does in plain English
+- what the public SDK, CLI, and MCP surfaces actually expose
+- how to integrate Fuse safely in scripts, CI, IDE tooling, and agent runtimes
 
-- [WHITEPAPER.md](WHITEPAPER.md): public technical whitepaper for the SDK surface
-- [ARCHITECTURE.md](ARCHITECTURE.md): component model and request flow
-- [MCP_QUICKSTART.md](MCP_QUICKSTART.md): local and hosted MCP setup
-- [SECURITY_AND_PRIVACY.md](SECURITY_AND_PRIVACY.md): trust boundary and data handling guidance
-- [OPERATIONS.md](OPERATIONS.md): validation, rollout, and maintenance checklist
+If you only read two files, start with the main README for the product overview and the whitepaper for the bigger picture.
 
-## Supporting Documents
+## Read This First
 
-- [BENCHMARKS.md](BENCHMARKS.md): how to measure and verify public performance claims
-- [USE_CASES.md](USE_CASES.md): integration scenarios for common teams
-- [COMPARISON.md](COMPARISON.md): product-surface comparison guidance
+- [README](../README.md): fast overview, install, quick start, pricing snapshot, and public surface summary
+- [Whitepaper](WHITEPAPER.md): product framing, public trust boundary, integration model, and why Fuse exists
 
-## Scope Rule
+## Choose Your Path
 
-These docs describe the public SDK and MCP surface only.
-- They document observable behavior and supported workflows.
-- They avoid confidential implementation details and unpublished internals.
+- New to Fuse: start with the README, then MCP Quickstart or Use Cases
+- Evaluating the SDK: read the Whitepaper, Architecture, and Comparison Guide
+- Rolling out in production: read Operations and Security and Privacy first
+
+## Integration Guides
+
+- [Architecture](ARCHITECTURE.md)
+- [MCP Quickstart](MCP_QUICKSTART.md)
+- [Operations Guide](OPERATIONS.md)
+- [Security and Privacy](SECURITY_AND_PRIVACY.md)
+
+## Decision Support
+
+- [Use Cases](USE_CASES.md)
+- [Comparison Guide](COMPARISON.md)
+- [Benchmarks Guidance](BENCHMARKS.md)
+
+## Public Documentation Rules
+
+This is a public-facing docs surface.
+- describe shipped SDK behavior, not private internals
+- keep claims tied to source, tests, examples, or public endpoints
+- treat pricing and endpoint availability as live public data that may evolve over time
+
