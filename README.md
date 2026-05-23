@@ -8,6 +8,17 @@ In plain English: Fuse helps you inspect a codebase, understand what is in it, s
 
 In technical terms: this repository ships the public Python package `atomadic-fuse`, the `fuse` CLI, the `fuse-mcp` stdio server, example workflows, and a bundled seed logic-base used for local bootstrapping.
 
+## What's new in 1.3.0
+
+- **Sovereign emitter domain dispatch** — emitters route by domain (`stripe`, `github`, `cloudflare`, `surfaces`, `notify`, `validate`). Every emitted atom is complete, deterministic, executable code. The stub hunter gate blocks any stub before it touches disk.
+- **Full release pipeline** — `ship_release_sovereign` runs 9 stages: preflight gate → sync next→stable → bump version → changelog → manifest + tag → commit and push → CF deploy → notify. One call ships.
+- **Sovereign preflight gate** — 7 gates run before any release: axiom check, audit gaps, stub scan, heal if needed, verify heal cycle, Nexus trust gate (confidence ≥ 0.85), hallucination oracle (risk < 0.15). Release blocks if any gate fails.
+- **Auto-correction pipeline** — `post_write` hook runs on every `.py` write: ruff lint → CNAE compliance scan → `decouple_file_stateful` → `heal_workspace_stateful` → `stub_hunter_composite`. Agents write; the pipeline corrects.
+- **Swarm hivemind wiring** — sessions register in the Atomadic Swarm at startup. New atoms emitted during a session become live for all agents without restart.
+- **Hot-reload architecture** — hook scripts reload from disk per invocation. MCP servers fire `notifications/tools/list_changed` when new atoms are registered — agents see new tools without session restart.
+- **814 atoms, 0 stubs** — stub hunter gate confirmed zero stubs across the full engine. 7 new tier_2 composites, 5 new tier_3 stateful atoms added.
+- **Fuse-next → stable sync** — `sync_next_to_stable_stateful` MD5-diffs the dev workspace before every stable publish. Stable never receives a partial or half-baked commit.
+
 ## Why Fuse
 
 Most AI-assisted build pipelines fail in familiar ways:
