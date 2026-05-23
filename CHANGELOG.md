@@ -12,4 +12,7 @@
 ## 1.1.4 - 2026-05-23
 - Automated release from Atomadic-Release pipeline.
 
+## 1.1.5 - 2026-05-23
+- Automated release from Atomadic-Release pipeline.
+
 

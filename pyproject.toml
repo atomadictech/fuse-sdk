@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "atomadic-fuse"
-version = "1.1.4"
+version = "1.1.5"
 description = "Atomadic Fuse — Spaghetti to Shippable. Per-repo monadic compiler with the emergent finder and full polyglot emitter set (T0-T5)."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -62,6 +62,7 @@ atomadic_fuse = [
  "logic-base-seed/tiers/tier_1/shards/*.jsonl",
  "logic-base-seed/tiers/tier_2/shards/*.jsonl",
 ]
+
 
 
 
