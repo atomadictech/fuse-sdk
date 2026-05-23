@@ -21,4 +21,7 @@
 ## 1.1.7 - 2026-05-23
 - Automated release from Atomadic-Release pipeline.
 
+## 1.1.8 - 2026-05-23
+- Automated release from Atomadic-Release pipeline.
+
 
