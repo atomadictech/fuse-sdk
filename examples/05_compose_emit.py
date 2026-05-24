@@ -1,6 +1,6 @@
 """Example: compose-stack preview, then emit_corpus to a target language.
 
-`compose_stack` walks the full T6 → T0 dependency chain for an intent
+`compose_stack` walks the full dependency chain for an intent (highest tier → T0)
 and returns the complete composed stack — every block that would be
 emitted, with its tier and inter-dependencies. Run it before `emit_corpus`
 to see exactly what you'll get.

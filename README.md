@@ -69,7 +69,19 @@ print(client.synthesize('./repo'))
 
 ## Public API Surface
 
-`FuseClient` currently exposes 34 public methods.
+The Python package exposes **34 `FuseClient` methods** for local and hosted integration. The **hosted MCP worker** at `https://fuse.atomadic.tech/mcp` exposes **14 read-only public tools** (master tier unlocks 20 additional operator tools). Use `fuse-sdk` CLI for hosted verbs only; use local `fuse-engine` for full emit/repair.
+
+### Hosted public MCP tools (14)
+
+These match `atomadic-ops/workers/atomadic-fuse-api/src/tool_manifest.json` visibility `public`:
+
+- `classify`, `catalog`, `doctor`, `fuse_recovery_status`, `verify_block`
+- `search_intent`, `explain_block`, `usage_stats`, `scan`, `validate`
+- `status`, `search`, `show`, `langs`
+
+Auth: `Authorization: Bearer $ATOMADIC_FUSE_API_KEY` (pro) or `$ATOMADIC_MASTER_KEY` (all tools). Free anonymous tier: 3 calls/day per verb (`classify` unmetered).
+
+### Full FuseClient methods (34)
 
 Repository workflows:
 - `compile`
@@ -117,24 +129,23 @@ Source of truth: [src/atomadic_fuse/client.py](src/atomadic_fuse/client.py)
 
 ## CLI Surface
 
-The SDK also ships a `fuse` CLI with these public verbs:
-- `init`
-- `seed-info`
-- `compile`
-- `classify`
-- `absorb`
-- `catalog`
-- `capabilities`
-- `intent`
-- `doctor`
-- `list`
+The SDK ships **`fuse-sdk`** (public hosted read-only verbs) and **`fuse-mcp`** (local stdio MCP):
+
+```bash
+fuse-sdk doctor
+fuse-sdk classify --body-text "def foo(): return 1"
+fuse-sdk list   # hosted + local verbs
+```
+
+Hosted verbs (14): classify, catalog, doctor, fuse_recovery_status, verify_block, search_intent, explain_block, usage_stats, scan, validate, status, search, show, langs.
+
+Local-only: `init`, `seed-info`, `list`.
 
 Example:
 
 ```bash
-fuse doctor
-fuse compile ./repo --output ./_fuse_out
-fuse intent "turn this repo into a cleaner package" --output ./_intent_out
+fuse-sdk doctor
+fuse-sdk search --query validate
 ```
 
 ## Spaghetti to Shippable (S2S)

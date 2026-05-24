@@ -23,6 +23,19 @@ pip install "atomadic-fuse[mcp]"
 ## Hosted MCP endpoint
 
 - `https://fuse.atomadic.tech/mcp`
+- Discovery: `https://fuse.atomadic.tech/.well-known/mcp.json`
+- Agent card: `https://fuse.atomadic.tech/.well-known/agent.json`
+
+### Public tools (14)
+
+`classify`, `catalog`, `doctor`, `fuse_recovery_status`, `verify_block`, `search_intent`, `explain_block`, `usage_stats`, `scan`, `validate`, `status`, `search`, `show`, `langs`
+
+Master key (`ATOMADIC_MASTER_KEY`) unlocks 20 additional internal operator tools (`compile`, `absorb`, `synthesize`, etc.).
+
+```bash
+export ATOMADIC_FUSE_API_KEY=your_pro_key   # 14 public tools
+# or ATOMADIC_MASTER_KEY for full hosted surface
+```
 
 ## Which mode should you use?
 

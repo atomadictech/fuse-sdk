@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "atomadic-fuse"
-version = "1.1.8"
+version = "1.2.0"
 description = "Atomadic Fuse — Spaghetti to Shippable. Per-repo monadic compiler with the emergent finder and full polyglot emitter set (T0-T5)."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -34,7 +34,7 @@ mcp = ["mcp[cli]>=1.0.0"]
 gui = ["gradio>=4.0.0"]
 
 [project.scripts]
-fuse = "atomadic_fuse.cli:main"
+fuse-sdk = "atomadic_fuse.cli:main"
 fuse-mcp = "atomadic_fuse.mcp_server:launch"
 
 [project.urls]
