@@ -6,7 +6,7 @@ Fuse is the public SDK for turning repository chaos into a clearer, more verifia
 
 In plain English: Fuse helps you inspect a codebase, understand what is in it, search for useful building blocks, validate outputs, and drive agent or automation workflows through a typed Python client, a command-line tool, or MCP.
 
-In technical terms: this repository ships the public Python package `atomadic-fuse`, the `fuse` CLI, the `fuse-mcp` stdio server, example workflows, and a bundled seed logic-base used for local bootstrapping.
+In technical terms: this repository ships the public Python package **`atomadic-fuse`** (PyPI **1.2.0**), the **`fuse-sdk`** CLI for hosted read-only calls, the **`fuse-mcp`** stdio server for local agents, example workflows, and a bundled seed logic-base for local bootstrapping.
 
 ## Why Fuse
 
@@ -17,10 +17,10 @@ Most AI-assisted build pipelines fail in familiar ways:
 - repo understanding, search, emit, and validation live in separate ad hoc scripts
 
 Fuse gives you one public integration surface for:
-- typed Python calls with `FuseClient`
-- local CLI access with `fuse`
-- MCP-based agent integration with `fuse-mcp`
-- verification and store-health workflows that are explicit instead of hidden behind internal tooling
+- typed Python calls with `FuseClient` (34 methods — hosted + operator tiers)
+- hosted CLI with **`fuse-sdk`** (14 public read-only verbs)
+- MCP-based agent integration with **`fuse-mcp`** (local stdio) or **`https://fuse.atomadic.tech/mcp`** (hosted)
+- free single-repo dry-run demo at **[fuse.atomadic.tech/#demo](https://fuse.atomadic.tech/#demo)** (no API key)
 
 ## What You Can Do
 
@@ -43,7 +43,7 @@ Fuse gives you one public integration surface for:
 ## Install
 
 ```bash
-pip install atomadic-fuse
+pip install atomadic-fuse==1.2.0
 ```
 
 Optional extras:
@@ -59,13 +59,14 @@ pip install "atomadic-fuse[mcp,gui]"
 ```python
 from atomadic_fuse import FuseClient
 
-client = FuseClient()
+client = FuseClient()  # uses https://fuse.atomadic.tech by default
 
-print(client.scan('./repo'))
-print(client.search_intent('validate and route input', tier='t2', limit=5))
-print(client.verify_block('lb:t2:compose_path_composite:bd7e1d030ef5'))
-print(client.synthesize('./repo'))
+print(client.doctor())
+print(client.search_intent("validate and route input", tier="t2", limit=5))
+print(client.verify_block("lb:t2:compose_path_composite:bd7e1d030ef5"))
 ```
+
+Operator-tier methods (`synthesize`, `compile`, `absorb`, etc.) require **master** API key on hosted MCP or local **`fuse-engine`** for full emit/repair.
 
 ## Public API Surface
 
@@ -228,6 +229,16 @@ This repository is a public SDK surface.
 - it documents package contracts, observable workflows, and integration patterns
 - it does not document private engine internals or unpublished orchestration systems
 - public claims in this repo should be reproducible from source, tests, examples, or public endpoints
+
+## PyPI publish
+
+| Path | When |
+|------|------|
+| **Manual (operator)** | Load `vault/VAULT.env` → `python -m build` → `twine upload dist/*` with `PYPI_API_TOKEN` |
+| **CI (tag `v*`)** | GitHub Actions `publish.yml` — requires repo secret `PYPI_API_TOKEN` |
+| **OIDC (optional)** | [PyPI trusted publishing](https://pypi.org/manage/account/publishing/) — owner `atomadictech`, repo `fuse-sdk`, workflow `publish.yml`, environment `pypi` |
+
+Orchestrated lane: `scripts/public_surface_release.ps1` (Atomadic-Release target).
 
 ## License
 

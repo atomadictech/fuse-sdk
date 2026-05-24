@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.1 - 2026-05-24
+- README aligned with reality: `fuse-sdk` CLI, 14 hosted vs 34 client methods, free demo URL, pip pin.
+- PyPI CI: `publish.yml` uses `PYPI_API_TOKEN` secret (OIDC optional add-on).
+- Public surface orchestrator: `scripts/public_surface_release.ps1`.
+
 ## 1.2.0 - 2026-05-24
 - Public CLI entry point renamed to `fuse-sdk` (hosted read-only 14 verbs); `fuse-mcp` for local stdio MCP.
 - README and docs aligned with hosted worker at `fuse.atomadic.tech` (14 public MCP tools, 34 client methods).
